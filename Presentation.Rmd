@@ -1,0 +1,59 @@
+---
+title: "Stock Market Ticker App"
+author: "Anish Joy"
+date: "31 October 2017"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+## Purpose
+This application helps users check the historical prices of NASDAQ listed stocks.
+
+### Input
+
+- *Stock Name* : Enter the stock name which is to tracked over a period of time
+- *From Date* : Enter the From date from the price needs to be tracked
+- *To Date* : Enter the To Date to which the price needs to be tracked
+
+### Output
+This application will display a plot of the stock price from the given From and To Dates.
+
+## R code
+
+This application uses the libraries *quantmod* and *plotly*. The main code is given below
+```{r echo=TRUE}
+library(quantmod)
+library(plotly)
+plot_sym<-function(sym){
+  fin_data<-getSymbols(sym,src="google",env=NULL)
+  fin_data1<-as.data.frame(fin_data)
+  fin_data1[,6]<-time(fin_data)
+  x = list(title = 'Year',
+           zeroline = TRUE)
+  y = list(title = 'Opening Stock Price (in $)',
+           zeroline = TRUE)
+  plot_ly(x=fin_data1[,6],y=fin_data1[,1],type="scatter",mode="lines") %>% 
+    layout(title="Stock Price",xaxis=x,yaxis=y)
+}
+```
+
+## Example Plot
+
+- Create a plot for Apple
+```{r echo=TRUE}
+plot_sym("AAPL")
+```
+
+## Application
+
+- The application is hosted at https://anishjoy.shinyapps.io/Stock_Market_App/ 
+- It is an effective tool to study stock markets and their movement in a period of time
+- A screeen shot of the Apple stock (AAPL) in the period from Jan-2012 to Oct-2017 is shown below
+```{r echo=FALSE}
+knitr::include_graphics("C:\\Users\\Aparna Sathyan\\Desktop\\Coursera\\Data Products in R\\Stock Market App\\Stock_Market_App\\screen_shot.jpg")
+````
